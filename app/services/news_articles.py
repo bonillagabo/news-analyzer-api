@@ -2,7 +2,6 @@ import httpx
 import logging
 from fastapi import HTTPException
 from app.core.config import settings
-from app.schemas.newsResponse import NewsResponse
 
 
 class NewsFetcherService:
@@ -46,7 +45,7 @@ class NewsFetcherService:
                     detail="An error occurred while decoding the JSON response. Please check the response format and try again.",
                 )
 
-    async def fetch_news_by_query(self, query: str) -> NewsResponse:
+    async def fetch_news_by_query(self, query: str):
         url = f"{self.base_url}/everything"
         params = {
             "apiKey": self.api_key,
@@ -63,7 +62,7 @@ class NewsFetcherService:
                 raise HTTPException(
                     status_code=404, detail="No articles found for the given query."
                 )
-            return NewsResponse(articles=articles)
+            return articles
         raise HTTPException(
             status_code=500,
             detail="An unexpected error occurred while fetching news.",
