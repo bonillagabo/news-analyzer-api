@@ -15,23 +15,18 @@ class NewsClassifier:
             "health",
             "business",
             "economy",
-            "others",
+            "unknown",
         ]
         self.batch_size = batch_size
 
-    def batch(self, iterable, n=1):
-        l = len(iterable)
-        for ndx in range(0, l, n):
-            yield iterable[ndx : min(ndx + n, l)]
-
     async def classify(self, data):
-        results_label = []
-        for batch_data in self.batch(data, self.batch_size):
-            results = await asyncio.get_running_loop().run_in_executor(
-                None, self.classifier_pipeline, batch_data, self.candidate_labels
-            )
-            results_label.extend([result["labels"][0] for result in results])
-        return results_label
+        results = await asyncio.get_running_loop().run_in_executor(
+            None,
+            lambda: self.classifier_pipeline(
+                data, candidate_labels=self.candidate_labels, batch_size=self.batch_size
+            ),
+        )
+        return [result["labels"][0] for result in results]
 
 
 news_classifier = NewsClassifier()
