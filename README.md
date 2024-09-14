@@ -19,7 +19,7 @@ The models used in this project are:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/your_username/news-sentiment-classification.git
+    git clone https://github.com/bonillagabo/news-analyzer-api.git
     cd news-sentiment-classification
 
 2. Create a virtual environment and activate it:
